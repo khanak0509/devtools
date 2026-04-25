@@ -157,9 +157,8 @@ class InspectorController extends DisposableController
     // TODO(kenz): When this method is called outside  createState(), this post
     // frame callback can be removed.
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      serviceConnection.errorBadgeManager.clearErrorCount(InspectorScreen.id);
+      serviceConnection.errorBadgeManager.clearErrors(InspectorScreen.id);
     });
-    filterErrors();
   }
 
   void _handleConnectionStop() {
@@ -381,8 +380,6 @@ class InspectorController extends DisposableController
       return;
     }
 
-    filterErrors();
-
     return _waitForPendingUpdateDone();
   }
 
@@ -402,13 +399,6 @@ class InspectorController extends DisposableController
       firstInspectorTreeLoadCompleted = true;
     }
     await onForceRefresh();
-  }
-
-  void filterErrors() {
-    serviceConnection.errorBadgeManager.filterErrors(
-      InspectorScreen.id,
-      (id) => hasDiagnosticsValue(InspectorInstanceRef(id)),
-    );
   }
 
   void setActivate(bool enabled) {
